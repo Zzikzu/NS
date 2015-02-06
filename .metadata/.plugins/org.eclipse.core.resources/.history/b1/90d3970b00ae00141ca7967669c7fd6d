@@ -1,0 +1,90 @@
+package paint;
+
+/* 
+ * PaintBrush v konzole (Shape <- Line, Square, Rectangle, Triangle, ….)
+	toString, move
+	fill?
+	fantazii sa medze nekladu, rozne transformacie, scale, resize, … .- ale vsetko v konzole
+pokrocili (nepovinne): List<Shape> + iterovat cez list a robit operacie na roznych typoch ulozenych v zozname 
+(volam vseobecnu metodu pre specificke triedy, nezaujimam sa o to, aky typ tam je).
+
+ */
+
+
+
+
+import java.util.Scanner;
+
+public class Paint {
+	public static void main(String[] args) {
+		
+		
+		//user input, what to draw
+		Scanner toDraw = new Scanner(System.in);
+		System.out.println("Co chces nakreslit? [trojuholnik, stvorec, obdlznik, ciara]");
+		String toDo = toDraw.next();
+		
+
+		
+		switch (toDo) {
+		case "trojuholnik":
+			
+			//user input, size
+			Scanner inputTria = new Scanner(System.in);
+			System.out.println("Zadaj vysku trojuhonika: ");
+			int sizeTria = inputTria.nextInt();
+
+			//vytvorenie objektu, volanie method
+			Triangle trojuholnik = new Triangle(sizeTria);
+			trojuholnik.printTriangle();
+			break;
+			
+		case "stvorec":
+			
+			//user input, size
+			Scanner inputSquere = new Scanner(System.in);
+			System.out.println("Zadaj velkos strany a: ");
+			int sizeSquare = inputSquere.nextInt();
+			
+			//vytvorenie objektu, volanie method
+			Square stvorec = new Square(sizeSquare);
+			stvorec.printSquare();
+			break;
+			
+			
+		case "obdlznik":
+			
+			//user input, size a
+			Scanner inputRectangleA = new Scanner(System.in);
+			System.out.println("Zadaj velkos strany a: ");
+			int sizeRectangleA = inputRectangleA.nextInt();
+			
+			//user input, size b
+			Scanner inputRectangleB = new Scanner(System.in);
+			System.out.println("Zadaj velkost strany b: ");
+			int sizeRectangleB = inputRectangleB.nextInt();
+			
+			//vytvorenie objektu, volanie method
+			Rectangle obdlznik = new Rectangle(sizeRectangleA, sizeRectangleB);
+			obdlznik.printRectangle();
+			break;
+			
+		case "ciara":
+			
+			//user input, size
+			Scanner inputLine = new Scanner(System.in);
+			System.out.println("Zadaj dlzku ciary: ");
+			int sizeLine = inputLine.nextInt();
+			
+			//vytvorenie objektu, volanie method
+			Line ciara = new Line(sizeLine);
+			ciara.printLine();
+			break;
+			
+			
+	
+		}
+		
+		
+	}
+}
