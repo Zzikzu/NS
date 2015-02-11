@@ -1,4 +1,4 @@
-package RegNoInter;
+package regNoInter;
 
 import java.util.Arrays;
 
@@ -11,9 +11,9 @@ public class Main {
     	
     	Register register = new Register(20);
 
-        register.addPerson(new Person("Janko Hrasko", "0900123456"));
-        register.addPerson(new Person("Ferko Mrkvicka", "0900123123"));
-        register.addPerson(new Person("Jozko Pucik", "0900666123"));
+        register.addPerson(new Person("Janko Hrasko", "0915213458"));
+        register.addPerson(new Person("Ferko Mrkvicka", "0602134646"));
+        register.addPerson(new Person("Jozko Pucik", "0916123456"));
     	
         	
     	

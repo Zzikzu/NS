@@ -1,4 +1,4 @@
-package RegNoInter;
+package regNoInter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,9 @@ import java.io.InputStreamReader;
 public class ConsoleUI {
     /** register.Register of persons. */
     private Register register;
+
+    //int pre inputCheck()
+    private int inputNum;
     
     /**
      * In JDK 6 use Console class instead.
@@ -31,34 +34,42 @@ public class ConsoleUI {
     }
     
     public void run() {
-        while (true) {			//po ukonceni kazdej operacie vypise menu
-            switch (showMenu()) {
-                case PRINT:
-                    printRegister();
-                    break;
-                
-                case ADD:
-                    addToRegister();
-                    break;
-                
-                case UPDATE:
-                    updateRegister();
-                    break;
-                
-                case REMOVE:
-                    removeFromRegister();
-                    break;
-                
-                case FIND:
-                    findInRegister();
-                    break;
-                
-                case EXIT:
-                    return;
-            }
+
+        do {
+        	showMenu();
+        	inputCheck();
+        	
+            switch (inputNum) {
+            
+        	  case 1:			//PRINT
+                printRegister();
+                break;
+            
+            case 2:				//ADD
+                addToRegister();
+                break;
+            
+            case 3:				//UPDATE
+                updateRegister();
+                break;
+            
+            case 4:				//REMOVE
+                removeFromRegister();
+                break;
+            
+            case 5:				//FIND
+                findInRegister();
+                break;
+            
+            case 6:				//EXIT
+                return;
+            default:
+            	System.out.println("Invalid option!");
         }
-    }
-    
+        	
+        } while (true);
+  }
+    	
     private String readLine() {
         //In JDK 6.0 and above Console class can be used
         //return System.console().readLine();
@@ -71,12 +82,8 @@ public class ConsoleUI {
     }
     
     
-    //NOVE
-    private int inputNum;
-    
     //metoda na osetrenie ciselneho inputu
     private boolean inputCheck(){
-    	inputNum = 0;				//@Tony, da sa to spravit tak aby som nemusel inicializovat?
     	
     	try {
             inputNum = Integer.parseInt(readLine());
@@ -87,27 +94,34 @@ public class ConsoleUI {
     	return true;
     }
     
-    private Option showMenu() {
+    private void showMenu() {
+    	
+    	  /*
+		 @Laci - toto tiez neviem, ci si mal takto zadane v ulohe, kazdopadne, ja by som to kus zmenil, 
+		 lebo tato metoda sa vola showMenu, tak by mala len zobrazit menu, zmenil by som return type na void a uplne by som odstranil tu slucku odtial
+		 a dal ju do readLine metody. Tam si zadefinuj lokalnu premennu inputNum (odstran tu clensku premennu).
+		 V slucke daj volanie showMenu() a input.readLine() a v podmienke daj iba inputCheck() a do tej metody zahrn aj tu kontrolu inputNum <= 0 || inputNum > Option.values().length a ako argumenttam posielaj inputNum, ktore dostanes z readline
+		 no a nakoniec v run() metode zmen v tom switchy volanie showMenu() na volanie readLine()
+		 
+		 ta skus to takto pomenit, ta struktura bude logicky lepsie zodpovedat tomu, co jednotlive metody maju robit, potom uploadni, pozriem este dalsie veci a ti napisem
+	*/
+    	
+    	/*
+    	@Tony - showMenu() som nerobil ja, bolo to uz spravene
+    	snazil som sa to prerobit, no nie uplne ako si pisal
+    	showMenu uz len vypise menu, tu loopu som zrusil a poriesil to v metode run()
+    	inputNum som nechal ako clensku premennu, lebo ju pouzivam vpodstate vsade kde sa zadava ciselny input
+    	funcie metod readLine() a inputCheck() su stale metuce, neviem ako to spravit lepsie 
+    	
+    	 */
         
-        //int selection = -1;
-
-        // new version, catch exception
-        // ostrenie pri zadani nevhodnej option, zly format pripadne nic
-        // options presunute do loopy
-        do {
-        	System.out.println();
-        	System.out.println("Menu.");
-        	for (Option option : Option.values()) {
-        		System.out.printf("%d. %s%n", option.ordinal() +1, option);
-        	}
-        	System.out.println("-----------------------------------------------");
-        	System.out.println("Option: ");
-	      
-        //zmena s pouzitim 	inputCheck()
-        } while (!inputCheck() || inputNum <= 0 || inputNum > Option.values().length); //pokial podmieka plati do/while sa opakuje
-        
-        
-        return Option.values()[inputNum - 1];
+    	System.out.println();
+    	System.out.println("Menu.");
+    	for (Option option : Option.values()) {
+    		System.out.printf("%d. %s%n", option.ordinal() +1, option);
+    	}
+    	System.out.println("-----------------------------------------------");
+    	System.out.println("Option: ");
         
     }
     
@@ -146,7 +160,8 @@ public class ConsoleUI {
 		if (register.addPerson(newPerson)) {
 			System.out.println(newPerson + " added to register.");
 		} else {
-			System.out.println("Person with this name or phone number already exists");
+			System.out.println("Person \"" + newPerson.getName() + "\" cannot be added to register");
+			System.out.println("The person is invalid or there is an existing detail conflict");
 		}
 	}    
         
@@ -171,26 +186,39 @@ public class ConsoleUI {
 
 				
 				switch (inputNum) {
-				case 1:
+				case 1:		//update NAME
 					System.out.println("Enter new name: ");
 					newName = readLine();
 					newPhoneNumber = register.getPerson((inputNum - 1)).getPhoneNumber();
 					break;
-				case 2:
+				case 2:		//update PHONE NUMBER
 					System.out.println("Enter new phone number: ");
 					newName = register.getPerson((inputNum - 1)).getName();
 					newPhoneNumber = readLine();
 					break;
-				case 3:
+				case 3:		//update BOTH
 					System.out.println("Enter new name: ");
 					newName = readLine();
 					System.out.println("Enter new phone number: ");
 					newPhoneNumber = readLine();
 					break;
 				}
-
-				register.addPerson(new Person(newName, newPhoneNumber),
-						(inputNum - 1));
+				
+				
+				/* @Tony - pridal som tento if
+				 ak sa pri update zadalo neplatne phone num priradi mu num
+				 musel som isValidPhoneNumber v clase Person dat ako public, bolo private
+				 */
+				
+				if(new Person(newName, newPhoneNumber).isValidPhoneNumber(newPhoneNumber)){
+					register.addPerson(new Person(newName, newPhoneNumber),(inputNum - 1));
+				}
+				else {
+					System.out.println("Invalid input!");
+				}
+				
+				
+			
 			} else {
 				System.out.println("Invalid option!");
 			}

@@ -1,4 +1,4 @@
-package RegNoInter;
+package regNoInter;
 
 /**
  * register.Person.
@@ -16,8 +16,10 @@ public class Person {
      * @param phoneNumber phone number of the person
      */
     public Person(String name, String phoneNumber) {
-        this.name = name;
-        this.setPhoneNumber(phoneNumber);        
+
+    		 this.name = name;
+    	     this.setPhoneNumber(phoneNumber);       
+        
     }
             
     /**
@@ -54,8 +56,9 @@ public class Person {
     	
     	
     	if(!isValidPhoneNumber(phoneNumberNew)) {
-            System.out.println(phoneNumberNew + "is not a valid number");
+            System.out.println("\"" + phoneNumberNew +"\""+ " is not a valid number");
     		//throw new RuntimeException("Phone number is not valid");
+            
         }
     	else {
     		phoneNumber = phoneNumberNew;
@@ -70,7 +73,7 @@ public class Person {
      * @param phoneNumber phone number to validate
      * @return <code>true</code> if phone number is valid, <code>false</code> otherwise
      */
-    private boolean isValidPhoneNumber(String phoneNumber) {
+    public boolean isValidPhoneNumber(String phoneNumber) {
     	    	   	
     	for (int i = 0; i < phoneNumber.length(); i++) {
 			if (!Character.isDigit(phoneNumber.charAt(i))){

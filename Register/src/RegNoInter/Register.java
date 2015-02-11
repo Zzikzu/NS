@@ -1,4 +1,4 @@
-package RegNoInter;
+package regNoInter;
 
 /**
  * register.Person register.
@@ -53,22 +53,34 @@ public class Register {
     public boolean addPerson(Person person) {
     	
     	//TODO: Zabezpecte aby nebolo mozne pridat osobu s rovnakym meno resp. tel. cislom ako sa nachadza v zozname.
-    	//navratovy tymp zmeneny na boolean
+    	//navratovy typ zmeneny na boolean
         boolean match = false;
     	
-        for (int i=0; i<this.getCount(); i++){
-    		if (person.getName().equals(this.getPerson(i).getName()) == true || person.getPhoneNumber().equals(this.getPerson(i).getPhoneNumber()) == true){
-    		match = true;
-    		}
-    	}
+        /*@Tony - nasiel som tu bug, 
+        ak sa pridavala osoba s invalid phone number dostalo hodnotu null
+        pri porovnavani person.getPhoneNumber().equals(this.getPerson(i).getPhoneNumber() doslo k exception a program spadol
+        osetril som to nasledovnym ifom
+        */
         
-        if (match != true){
-        	 persons[count] = person;
-             count++;
-             return true;
-    	} else {
-    		return false;
-    	}               
+        //avoids to add person with invalid phone number
+		if (person.getPhoneNumber() == null) {
+			match = true;
+			
+		} else {
+			for (int i = 0; i < this.getCount(); i++) {
+				if (person.getName().equals(this.getPerson(i).getName()) == true || person.getPhoneNumber().equals(this.getPerson(i).getPhoneNumber()) == true) {
+					match = true;
+				}
+			}
+		}
+
+		if (match != true) {
+			persons[count] = person;
+			count++;
+			return true;
+		} else {
+			return false;
+		}   
     }
 
     
